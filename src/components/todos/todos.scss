@@ -1,0 +1,124 @@
+.todos {
+    &_main {
+        width: 100%;
+        max-width: 767px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    &__add {
+        display: flex;
+        align-items: center;
+
+        margin-bottom: 20px;
+        padding: 5px;
+        padding-left: 0;
+        .todos__btn {
+            margin-right: 0 !important;
+        }
+        .icon_add {
+            color: #4a148c;
+        }
+    }
+
+    &__field {
+        flex: 1 1 auto;
+    }
+
+    &__label {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        padding-right: 5px;
+        padding-left: 5px;
+
+        span {
+            font-size: 12px;
+        }
+        input {
+            cursor: pointer;
+        }
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__placeholder {
+        text-align: center;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+
+        margin-bottom: 20px;
+        padding: 5px;
+
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &_completed {
+            opacity: 0.4;
+            .todos__text {
+                text-decoration: line-through;
+            }
+        }
+
+        &_important {
+            .todos__text {
+                font-weight: 700;
+            }
+        }
+    }
+
+    &__text {
+        flex: 1 1 auto;
+
+        padding-right: 40px;
+
+        user-select: none;
+        text-transform: uppercase;
+    }
+
+    &__btn {
+        flex: 0 0 40px;
+
+        max-width: 40px;
+        height: 40px;
+        padding: 0;
+
+        cursor: pointer;
+
+        border: none;
+        border-radius: 0;
+        outline: none;
+        background-color: transparent;
+
+        appearance: none;
+        .icon {
+            font-size: 20px;
+
+            @include transition('transform');
+            &:hover {
+                transform: scale(1.5);
+            }
+        }
+        .icon_success {
+            color: green;
+        }
+
+        .icon_remove {
+            color: red;
+        }
+
+        &:first-of-type {
+            margin-right: 10px;
+        }
+    }
+}

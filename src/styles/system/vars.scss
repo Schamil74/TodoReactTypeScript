@@ -1,0 +1,46 @@
+//===typo==========================
+$base_fs: 16px !default;
+$base_lh: 1.428571429;
+$base_font: Arial, sans-serif;
+$accent_font: 'Jura', $base_font;
+
+//===colors========================
+$white: #ffffff;
+$black: #000000;
+
+$accent_warn: #fada3c;
+$accent_dark: $black;
+$accent_alert: #ff0000;
+$accent_gray: #828282;
+$accent_light: #e3f0fa;
+
+//===container=====================
+$body_max_width: 1920px;
+$gutter: 15px;
+
+//===breaks========================
+$breaks: (
+    laptop: 1360px,
+    tablet: 1024px,
+    mobile: 767px,
+    mobilesm: 575px,
+    mobilexs: 479px,
+    mobilexxs: 375px,
+);
+
+//===container-width========================
+$container: (
+    desktop: 1280px,
+    laptop: 990px,
+    tablet: 730px,
+    mobile: 100%,
+);
+
+//===transition=====================
+$transition: linear;
+
+$cover: 'object-fit: cover;';
+$contain: 'object-fit: contain;';
+
+$create-font-face: false !default;
+$create-icon-classes: false !default;

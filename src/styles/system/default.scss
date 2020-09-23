@@ -1,0 +1,195 @@
+* {
+    box-sizing: border-box;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    font-size: $base_fs;
+    line-height: $base_lh;
+
+    @include below(map-get($breaks, laptop)) {
+        font-size: 1.25vw;
+    }
+    @include below(map-get($breaks, tablet)) {
+        font-size: 1.5625vw;
+    }
+    @include below(map-get($breaks, mobile)) {
+        font-size: 2.086049544vw;
+    }
+    @include below(map-get($breaks, mobilesm)) {
+        font-size: 2.782608696vw;
+    }
+    @include below(map-get($breaks, mobilexs)) {
+        font-size: 3.340292276vw;
+    }
+    @include below(map-get($breaks, mobilexxs)) {
+        font-size: 4.2666666676vw;
+    }
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow-x: hidden;
+
+    color: $accent_dark;
+    background-color: $white;
+
+    font-family: $accent_font;
+    line-height: inherit;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+.app {
+    max-width: $body_max_width;
+    height: inherit;
+    min-height: inherit;
+    margin-right: auto;
+    margin-left: auto;
+
+    &__wrapper {
+        display: grid;
+
+        height: inherit;
+        min-height: inherit;
+
+        grid-template-areas:
+            'header'
+            'main'
+            'footer';
+        grid-template-rows: auto 1fr auto;
+        grid-template-columns: 100%;
+    }
+
+    &__header {
+        height: 60px;
+
+        grid-area: header;
+    }
+
+    &__main {
+        grid-area: main;
+    }
+
+    &__footer {
+        height: 60px;
+
+        grid-area: footer;
+    }
+
+    &__container {
+        display: flex;
+        align-items: center;
+
+        height: 100%;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+}
+
+.container {
+    max-width: map-get($container, desktop);
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: $gutter;
+    padding-left: $gutter;
+
+    @include below(map-get($breaks, laptop)) {
+        max-width: map-get($container, laptop);
+    }
+    @include below(map-get($breaks, tablet)) {
+        max-width: map-get($container, tablet);
+    }
+    @include below(map-get($breaks, mobile)) {
+        max-width: map-get($container, mobile);
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+dl,
+dd,
+ol,
+ul,
+form,
+fieldset,
+legend,
+figure,
+table,
+th,
+td,
+caption,
+hr {
+    margin: 0;
+    padding: 0;
+}
+
+time {
+    display: inline-block;
+}
+
+ul,
+li {
+    list-style-type: none;
+}
+
+table {
+    border-spacing: 0;
+
+    border-collapse: collapse;
+}
+
+td,
+th {
+    padding: 0;
+}
+
+img,
+video,
+iframe {
+    display: block;
+
+    max-width: 100%;
+    height: auto;
+}
+
+iframe {
+    width: 100%;
+}
+
+a,
+button {
+    text-decoration: none;
+
+    outline: none;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:visited {
+        text-decoration: none;
+
+        outline: none;
+    }
+}
+
+input,
+select,
+textarea {
+    outline: none;
+}

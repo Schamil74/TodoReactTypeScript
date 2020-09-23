@@ -1,0 +1,44 @@
+@include font-face(
+    'Jura',
+    '/fonts/Jura/Jura-Light',
+    300,
+    normal,
+    eot woff woff2
+);
+@include font-face(
+    'Jura',
+    '/fonts/Jura/Jura-Regular',
+    400,
+    normal,
+    eot woff woff2
+);
+@include font-face(
+    'Jura',
+    '/fonts/Jura/Jura-Medium',
+    500,
+    normal,
+    eot woff woff2
+);
+@include font-face(
+    'Jura',
+    '/fonts/Jura/Jura-Bold',
+    700,
+    normal,
+    eot woff woff2
+);
+
+@include font-face(
+    'iconfont',
+    '/fonts/iconfont/iconfont',
+    400,
+    normal,
+    eot svg ttf woff
+);
+
+@include font-face(
+    'iconfont',
+    '../fonts/iconfont/iconfont',
+    400,
+    normal,
+    eot svg ttf woff
+);
