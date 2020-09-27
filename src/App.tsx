@@ -1,40 +1,76 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect, useState, Fragment, useRef } from 'react'
 import { Switch, Redirect, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '@/store/reducers'
+import { RootState } from '@/store/types'
 import { thunkLogOut, setUid } from '@/store/actions/auth-actions'
-import { UserType } from '@/store/types/auth-types'
+import { AppThunkDispatch } from '@/store/types/'
 import TodosPage from '@/pages/todos-page'
 import Login from '@/pages/login'
 import Register from '@/pages/register'
 import Loader from '@/components/loader/loader'
 import firebase from '@/db/db'
+import { Dispatch } from 'redux'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 const blockClassName = 'app'
 const header = 'header'
 
+const initialRoutes = [
+    { id: '1', authed: true, path: '/', exact: true, Component: TodosPage },
+    { id: '2', authed: false, path: '/login', Component: Login },
+    { id: '3', authed: false, path: '/register', Component: Register },
+]
+
 const App: React.FC = () => {
     const authState = (state: RootState) => state.auth
-    const { isFetchingAuth } = useSelector(authState)
-    const [user, setUser] = useState<UserType>(null)
+    const { isFetching, uid } = useSelector(authState)
     const [redirect, setRedirect] = useState<string>('')
-    const thunkDispatch: AppDispatch = useDispatch()
-    const dispatch = useDispatch()
+    const [routes, setRoutes] = useState<Array<{}>>([])
+    const thunkDispatch: AppThunkDispatch = useDispatch()
+    const dispatch: Dispatch = useDispatch()
     const handleClickLogOut = (ev: React.MouseEvent) => {
         thunkDispatch(thunkLogOut())
     }
+    const nodeRef = useRef(null)
+    const filteredRoutes = (uid: string | null, routes: Array<{}>) => {
+        let innerState = false
+        if (uid) innerState = true
+
+        return routes.filter((route: any) => {
+            return route.authed === innerState
+        })
+    }
     useEffect(() => {
         firebase.auth().onAuthStateChanged(user => {
-            setUser(user)
-
             if (user) {
                 setRedirect('/')
                 dispatch(setUid(user.uid))
+                setRoutes(filteredRoutes(user.uid, initialRoutes))
             } else {
                 setRedirect('/login')
+                dispatch(setUid(null))
+                setRoutes(filteredRoutes(null, initialRoutes))
             }
         })
     }, [])
+
+    const routesAreAready = routes.map(
+        ({ id, path, exact, Component }: any) => (
+            <Route key={id} exact={exact} path={path}>
+                <CSSTransition
+                    nodeRef={nodeRef}
+                    timeout={500}
+                    in={true}
+                    classNames={'item'}
+                    unmountOnExit
+                >
+                    <div className={blockClassName + '__inner'} ref={nodeRef}>
+                        <Component />
+                    </div>
+                </CSSTransition>
+            </Route>
+        )
+    )
 
     return (
         <div className={blockClassName + '__wrapper'}>
@@ -44,7 +80,7 @@ const App: React.FC = () => {
                         TODO APP (REACT, ROUTER, REDUX, TYPESCRIPT, FIREBASE)
                     </h1>
 
-                    {user && (
+                    {uid && (
                         <button
                             onClick={handleClickLogOut}
                             type="button"
@@ -56,35 +92,29 @@ const App: React.FC = () => {
                 </div>
             </div>
             <div className={blockClassName + '__main main'}>
-                <div className={blockClassName + '__container container'}>
-                    {isFetchingAuth ? (
+                <TransitionGroup
+                    className={blockClassName + '__container container'}
+                >
+                    {isFetching && !uid ? (
                         <Loader />
                     ) : (
                         <Switch>
-                            {user ? (
+                            {routesAreAready.length > 0 && (
                                 <Fragment>
-                                    <Route
-                                        path={'/'}
-                                        exact
-                                        component={TodosPage}
-                                    />
-                                    <Redirect to={redirect} />
-                                </Fragment>
-                            ) : (
-                                <Fragment>
-                                    <Route path={'/login'} component={Login} />
-                                    <Route
-                                        path={'/register'}
-                                        component={Register}
-                                    />
+                                    {routesAreAready}
+
                                     <Redirect to={redirect} />
                                 </Fragment>
                             )}
                         </Switch>
                     )}
+                </TransitionGroup>
+            </div>
+            <div className={blockClassName + '__footer footer'}>
+                <div className={header + '__container container'}>
+                    <h5>Frontend-dveloper: Minibaev Shamil</h5>
                 </div>
             </div>
-            <div className={blockClassName + '__footer footer'}></div>
         </div>
     )
 }

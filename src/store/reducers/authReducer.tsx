@@ -1,13 +1,18 @@
 import {
     SET_UID,
-    SET_FETCHING_AUTH,
+    SET_FETCHING,
+    SET_ERROR,
     AuthType,
     AuthActionTypes,
 } from '@/store/types/auth-types'
 
 const initialState: AuthType = {
     uid: null,
-    isFetchingAuth: false,
+    isFetching: false,
+    isError: {
+        error: false,
+        msg: '',
+    },
 }
 
 export function authReducer(
@@ -15,15 +20,31 @@ export function authReducer(
     action: AuthActionTypes
 ): AuthType {
     switch (action.type) {
-        case SET_FETCHING_AUTH:
+        case SET_FETCHING:
             return {
                 ...state,
-                isFetchingAuth: true,
+                isError: {
+                    error: false,
+                    msg: '',
+                },
+                isFetching: action.isFetching,
+            }
+        case SET_ERROR:
+            return {
+                ...state,
+                isFetching: false,
+                isError: {
+                    error: action.isError.error,
+                    msg: action.isError.msg,
+                },
             }
         case SET_UID:
             return {
-                ...state,
-                isFetchingAuth: false,
+                isError: {
+                    error: false,
+                    msg: '',
+                },
+                isFetching: false,
                 uid: action.uid,
             }
 

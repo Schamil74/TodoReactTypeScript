@@ -1,0 +1,34 @@
+.popup-overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding: 0.3125rem;
+    padding: 10px;
+
+    border: 1px solid #d7d7d7;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.modal {
+    &__title {
+        margin-bottom: 10px;
+
+        text-align: center;
+    }
+
+    &__error {
+        margin-bottom: 10px;
+
+        text-align: center;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+    }
+}

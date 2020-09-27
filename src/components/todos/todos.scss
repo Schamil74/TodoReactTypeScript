@@ -5,6 +5,30 @@
         margin-right: auto;
         margin-left: auto;
     }
+    &__filters {
+        display: flex;
+
+        margin-right: -5px;
+        margin-bottom: 20px;
+        margin-left: -5px;
+        &-item {
+            width: calc(25% - 10px);
+            margin-right: 5px;
+            margin-left: 5px;
+
+            cursor: pointer;
+            text-align: center;
+
+            color: #4a148c;
+            border: 1px solid #4a148c;
+            &.is-active {
+                color: #fff;
+                background-color: #4a148c;
+
+                font-weight: bold;
+            }
+        }
+    }
 
     &__add {
         display: flex;

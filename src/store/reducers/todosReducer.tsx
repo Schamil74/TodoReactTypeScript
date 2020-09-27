@@ -22,7 +22,7 @@ export function todoReducer(
         case SET_FETCHING:
             return {
                 ...state,
-                isFetching: true,
+                isFetching: action.isFetching,
             }
 
         case GET_TODOS:
@@ -56,6 +56,7 @@ export function todoReducer(
         case CLEAR_TODOS:
             return {
                 ...state,
+                isFetching: false,
                 todos: [],
             }
         default:

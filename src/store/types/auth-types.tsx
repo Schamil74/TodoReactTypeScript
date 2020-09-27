@@ -1,9 +1,15 @@
 export const SET_UID = 'SET_UID'
-export const SET_FETCHING_AUTH = 'SET_FETCHING_AUTH'
+export const SET_FETCHING = 'SET_FETCHING'
+export const SET_ERROR = 'SET_ERROR'
 export const SET_LOGGED = 'SET_LOGGED'
 
 export type UserType = firebase.User | null
 export type UidType = string | null
+export type IsFetchingType = boolean
+export interface IsErrorType {
+    error: boolean
+    msg: string
+}
 
 export type AuthPropsType = {
     email: string
@@ -12,7 +18,8 @@ export type AuthPropsType = {
 
 export interface AuthType {
     uid: UidType
-    isFetchingAuth: boolean
+    isFetching: IsFetchingType
+    isError: IsErrorType
 }
 
 export interface SetUidActionType {
@@ -20,9 +27,17 @@ export interface SetUidActionType {
     uid: UidType
 }
 
-export interface FetchingAuthType {
-    type: typeof SET_FETCHING_AUTH
-    isFetchingAuth: boolean
+export interface SetIsFetchingActionType {
+    type: typeof SET_FETCHING
+    isFetching: IsFetchingType
 }
 
-export type AuthActionTypes = SetUidActionType | FetchingAuthType
+export interface SetErrorActionType {
+    type: typeof SET_ERROR
+    isError: IsErrorType
+}
+
+export type AuthActionTypes =
+    | SetUidActionType
+    | SetIsFetchingActionType
+    | SetErrorActionType

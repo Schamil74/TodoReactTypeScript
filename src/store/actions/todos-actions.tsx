@@ -15,20 +15,16 @@ import {
     FetcingActionTypes,
     ClearTodoActionTypes,
 } from '@/store/types/todo-types'
-import { UidType } from '@/store/types/auth-types'
-import { ThunkAction } from 'redux-thunk'
-import { RootState } from '@/store/reducers'
-import { Action } from 'redux'
+
 import firebase from '@/db/db'
+import { AppThunkAction } from '@/store/types'
 
 const getUid = () => {
     const user = firebase.auth().currentUser
     return user ? user.uid : null
 }
 
-type thunkType = ThunkAction<Promise<void>, RootState, unknown, Action<string>>
-
-export const thunkGetTodos = (): thunkType => async dispatch => {
+export const thunkGetTodos = (): AppThunkAction => async dispatch => {
     const uid = getUid()
     const resultTodos: Array<InitialTodoType> = []
     dispatch(isFetching(true))
@@ -59,7 +55,7 @@ export const thunkGetTodos = (): thunkType => async dispatch => {
 
 export const thunkAddTodo = (
     partTodo: BaseTodoType
-): thunkType => async dispatch => {
+): AppThunkAction => async dispatch => {
     const uid = getUid()
     dispatch(isFetching(true))
 
@@ -76,14 +72,18 @@ export const thunkAddTodo = (
     dispatch(addTodo(todo))
 }
 
-export const thunkDeleteTodo = (id: IdType): thunkType => async dispatch => {
+export const thunkDeleteTodo = (
+    id: IdType
+): AppThunkAction => async dispatch => {
     const uid = getUid()
     dispatch(isFetching(true))
     await firebase.database().ref(`/users/${uid}/todos`).child(id).remove()
     dispatch(deleteTodo(id))
 }
 
-export const thunkCompleteTodo = (id: IdType): thunkType => async dispatch => {
+export const thunkCompleteTodo = (
+    id: IdType
+): AppThunkAction => async dispatch => {
     const uid = getUid()
     dispatch(isFetching(true))
     const child = await firebase
@@ -91,6 +91,7 @@ export const thunkCompleteTodo = (id: IdType): thunkType => async dispatch => {
         .ref(`users/${uid}/todos/`)
         .child(id)
         .once('value')
+
     const todo = child.val()
 
     await firebase
