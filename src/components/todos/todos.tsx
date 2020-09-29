@@ -45,11 +45,12 @@ const Todos: React.FC<IProps> = props => {
         setImportant(prev => (prev = checked))
     }
 
-    const handleClickAdd = (ev: React.MouseEvent<HTMLButtonElement>) => {
-        if (title.trim() == '') return
+    const handleClickAdd = () => {
+        const value = title.trim()
+        if (value == '') return
         thunkDispatch(
             thunkAddTodo({
-                title: title.trim(),
+                title: value,
                 completed: false,
                 important,
             })
@@ -58,17 +59,11 @@ const Todos: React.FC<IProps> = props => {
         setTitle(prev => (prev = ''))
     }
 
-    const handlerClickDelete = (
-        ev: React.MouseEvent<HTMLButtonElement>,
-        id: IdType
-    ) => {
+    const handlerClickDelete = (id: IdType) => {
         thunkDispatch(thunkDeleteTodo(id))
     }
 
-    const handlerClickCompleted = (
-        ev: React.MouseEvent<HTMLButtonElement>,
-        id: IdType
-    ) => {
+    const handlerClickCompleted = (id: IdType) => {
         thunkDispatch(thunkCompleteTodo(id))
     }
 
@@ -107,7 +102,7 @@ const Todos: React.FC<IProps> = props => {
                     <p className={blockClassName + '__text'}>{title}</p>
 
                     <button
-                        onClick={ev => handlerClickCompleted(ev, id)}
+                        onClick={() => handlerClickCompleted(id)}
                         className={blockClassName + '__btn'}
                         type="button"
                         title={
@@ -120,7 +115,7 @@ const Todos: React.FC<IProps> = props => {
                     </button>
 
                     <button
-                        onClick={ev => handlerClickDelete(ev, id)}
+                        onClick={() => handlerClickDelete(id)}
                         className={blockClassName + '__btn'}
                         type="button"
                         title="Удалить"
@@ -144,9 +139,7 @@ const Todos: React.FC<IProps> = props => {
 
                         return (
                             <div
-                                onClick={() => {
-                                    handleFilter(item.filter)
-                                }}
+                                onClick={() => handleFilter(item.filter)}
                                 className={classNames}
                                 key={item.filter}
                             >

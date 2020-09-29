@@ -1,10 +1,18 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, ChangeEvent, useEffect } from 'react'
 import withModificator from '@/hoc/withModificator'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppThunkDispatch } from '@/store/types'
 import { RootState } from '@/store/types'
 import ModalError from '@/components/modal/modal'
+
+import {
+    createControl,
+    validate,
+    validateForm,
+    Ifield,
+} from '@/form/form-validation'
+
 type ThunkArgType = {
     email: string
     password: string
@@ -18,15 +26,45 @@ type PropsType = {
     bindTo: string
     textHelper: string
     textBtn: string
+    titleModal: string
 }
+
+function createFormControls() {
+    return {
+        email: createControl(
+            {
+                type: 'email',
+                errorMessage: 'Поле email не может быть пустым',
+            },
+            {
+                required: true,
+                email: true,
+            }
+        ),
+        password: createControl(
+            {
+                type: 'password',
+                errorMessage: 'Поле password не может быть пустым',
+            },
+            {
+                required: true,
+                minLength: 6,
+            }
+        ),
+    }
+}
+
 const Auth: React.FC<PropsType> = props => {
     const { className, thunkMethod, textHelper, textBtn, bindTo } = props
     const authState = (state: RootState) => state.auth
     const { isError } = useSelector(authState)
     const thunkDispatch: AppThunkDispatch = useDispatch()
     const [email, setEmail] = useState<string>('')
+    const [formControls, setFormControls] = useState<any>('')
     const [password, setPassword] = useState<string>('')
-
+    useEffect(() => {
+        setFormControls(createFormControls())
+    }, [])
     const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
         ev.preventDefault()
         if (email !== '' && password !== '') {
@@ -34,13 +72,13 @@ const Auth: React.FC<PropsType> = props => {
         }
     }
 
-    const handleChangeEmail = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeEmail = (ev: ChangeEvent<HTMLInputElement>) => {
         const target = ev.target
         const value: string = target.value
         setEmail(value)
     }
 
-    const handleChangePassword = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangePassword = (ev: ChangeEvent<HTMLInputElement>) => {
         const target = ev.target
         const value: string = target.value
         setPassword(value)
@@ -51,7 +89,7 @@ const Auth: React.FC<PropsType> = props => {
             {isError.error && (
                 <ModalError
                     open={true}
-                    title="Ошибка входа"
+                    title="Ошибка авторизации"
                     text={isError.msg}
                 />
             )}

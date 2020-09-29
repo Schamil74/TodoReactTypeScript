@@ -45,7 +45,7 @@ export const thunkGetTodos = (): AppThunkAction => async dispatch => {
                 id: key,
                 title: todo.title,
                 important: todo.important,
-                completed: todo.competed,
+                completed: todo.completed,
             })
         })
 
