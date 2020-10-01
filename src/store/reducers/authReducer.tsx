@@ -1,9 +1,9 @@
 import {
-    SET_UID,
-    SET_FETCHING,
-    SET_ERROR,
-    AuthType,
     AuthActionTypes,
+    AuthType,
+    SET_ERROR,
+    SET_FETCHING,
+    SET_UID,
 } from '@/store/types/auth-types'
 
 const initialState: AuthType = {

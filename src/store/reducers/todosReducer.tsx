@@ -1,12 +1,12 @@
 import {
-    TodoState,
-    TodoActionTypes,
-    GET_TODOS,
     ADD_TODO,
-    DELETE_TODO,
-    COMPLETE_TODO,
     CLEAR_TODOS,
+    COMPLETE_TODO,
+    DELETE_TODO,
+    GET_TODOS,
     SET_FETCHING,
+    TodoActionTypes,
+    TodoState,
 } from '@/store/types/todo-types'
 
 const initialState: TodoState = {

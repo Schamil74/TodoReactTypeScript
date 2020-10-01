@@ -1,31 +1,33 @@
-import {
-    InitialTodoType,
-    IdType,
-    GET_TODOS,
-    ADD_TODO,
-    DELETE_TODO,
-    COMPLETE_TODO,
-    CLEAR_TODOS,
-    SET_FETCHING,
-    CompleteTodoActionTypes,
-    BaseTodoType,
-    GetTodoActionTypes,
-    AddTodoActionTypes,
-    DeleteTodoActionTypes,
-    FetcingActionTypes,
-    ClearTodoActionTypes,
-} from '@/store/types/todo-types'
-
 import firebase from '@/db/db'
 import { AppThunkAction } from '@/store/types'
+import {
+    AddTodoActionTypes,
+    ADD_TODO,
+    BaseTodoType,
+    ClearTodoActionTypes,
+    CLEAR_TODOS,
+    CompleteTodoActionTypes,
+    COMPLETE_TODO,
+    DeleteTodoActionTypes,
+    DELETE_TODO,
+    FetcingActionTypes,
+    GetTodoActionTypes,
+    GET_TODOS,
+    IdType,
+    InitialTodoType,
+    SET_FETCHING,
+} from '@/store/types/todo-types'
 
 const getUid = () => {
     const user = firebase.auth().currentUser
     return user ? user.uid : null
 }
 
-export const thunkGetTodos = (): AppThunkAction => async dispatch => {
-    const uid = getUid()
+export const thunkGetTodos = (): AppThunkAction => async (
+    dispatch,
+    getState
+) => {
+    const { uid } = getState().auth
     const resultTodos: Array<InitialTodoType> = []
     dispatch(isFetching(true))
 
@@ -53,10 +55,11 @@ export const thunkGetTodos = (): AppThunkAction => async dispatch => {
     }
 }
 
-export const thunkAddTodo = (
-    partTodo: BaseTodoType
-): AppThunkAction => async dispatch => {
-    const uid = getUid()
+export const thunkAddTodo = (partTodo: BaseTodoType): AppThunkAction => async (
+    dispatch,
+    getState
+) => {
+    const { uid } = getState().auth
     dispatch(isFetching(true))
 
     const response = await firebase
@@ -72,19 +75,21 @@ export const thunkAddTodo = (
     dispatch(addTodo(todo))
 }
 
-export const thunkDeleteTodo = (
-    id: IdType
-): AppThunkAction => async dispatch => {
-    const uid = getUid()
+export const thunkDeleteTodo = (id: IdType): AppThunkAction => async (
+    dispatch,
+    getState
+) => {
+    const { uid } = getState().auth
     dispatch(isFetching(true))
     await firebase.database().ref(`/users/${uid}/todos`).child(id).remove()
     dispatch(deleteTodo(id))
 }
 
-export const thunkCompleteTodo = (
-    id: IdType
-): AppThunkAction => async dispatch => {
-    const uid = getUid()
+export const thunkCompleteTodo = (id: IdType): AppThunkAction => async (
+    dispatch,
+    getState
+) => {
+    const { uid } = getState().auth
     dispatch(isFetching(true))
     const child = await firebase
         .database()

@@ -1,9 +1,9 @@
-import React, { Fragment, useEffect } from 'react'
-import Todos from '@/components/todos/todos'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppThunkDispatch, RootState } from '@/store/types'
-import { thunkGetTodos } from '@/store/actions/todos-actions'
 import Loader from '@/components/loader/loader'
+import Todos from '@/components/todos/todos'
+import { thunkGetTodos } from '@/store/actions/todos-actions'
+import { AppThunkDispatch, RootState } from '@/store/types'
+import React, { Fragment, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 const TodosPage = () => {
     const todosState = (state: RootState) => state.todos

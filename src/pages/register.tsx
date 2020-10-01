@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
 import Auth from '@/components/auth/auth'
-
 import { thunkRegister } from '@/store/actions/auth-actions'
+import React from 'react'
 
 const Register: React.FC = () => {
     return (

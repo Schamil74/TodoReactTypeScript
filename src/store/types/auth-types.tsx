@@ -27,7 +27,7 @@ export interface SetUidActionType {
     uid: UidType
 }
 
-export interface SetIsFetchingActionType {
+export interface FetchingActionType {
     type: typeof SET_FETCHING
     isFetching: IsFetchingType
 }
@@ -39,5 +39,5 @@ export interface SetErrorActionType {
 
 export type AuthActionTypes =
     | SetUidActionType
-    | SetIsFetchingActionType
+    | FetchingActionType
     | SetErrorActionType

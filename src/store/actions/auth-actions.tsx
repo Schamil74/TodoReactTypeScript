@@ -1,25 +1,24 @@
-import {
-    SET_UID,
-    SET_FETCHING,
-    SET_ERROR,
-    SetUidActionType,
-    SetIsFetchingActionType,
-    SetErrorActionType,
-    AuthPropsType,
-    UidType,
-    IsFetchingType,
-    IsErrorType,
-} from '@/store/types/auth-types'
-import { clearTodos } from '@/store/actions/todos-actions'
 import firebase from '@/db/db'
-import { Dispatch } from 'redux'
-import { AppThunkAction } from '@/store/types'
 import messages from '@/messages/firebase.error'
+import { clearTodos } from '@/store/actions/todos-actions'
+import { AppThunkAction } from '@/store/types'
+import {
+    AuthPropsType,
+    FetchingActionType,
+    IsErrorType,
+    IsFetchingType,
+    SetErrorActionType,
+    SetUidActionType,
+    SET_ERROR,
+    SET_FETCHING,
+    SET_UID,
+    UidType,
+} from '@/store/types/auth-types'
 
 export const thunkRegister = ({
     email,
     password,
-}: AuthPropsType): AppThunkAction => async (dispatch: Dispatch) => {
+}: AuthPropsType): AppThunkAction => async dispatch => {
     try {
         dispatch(isFetching(true))
         const response = await firebase
@@ -43,7 +42,7 @@ export const thunkRegister = ({
 export const thunkLogin = ({
     email,
     password,
-}: AuthPropsType): AppThunkAction => async (dispatch: Dispatch) => {
+}: AuthPropsType): AppThunkAction => async dispatch => {
     try {
         dispatch(isFetching(true))
         const response = await firebase
@@ -64,7 +63,7 @@ export const thunkLogin = ({
     }
 }
 
-export const thunkLogOut = (): AppThunkAction => async (dispatch: Dispatch) => {
+export const thunkLogOut = (): AppThunkAction => async dispatch => {
     try {
         dispatch(isFetching(true))
         await firebase.auth().signOut()
@@ -88,9 +87,7 @@ export function setUid(uid: UidType): SetUidActionType {
     }
 }
 
-export function isFetching(
-    isFetching: IsFetchingType
-): SetIsFetchingActionType {
+export function isFetching(isFetching: IsFetchingType): FetchingActionType {
     return {
         type: SET_FETCHING,
         isFetching,

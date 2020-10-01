@@ -1,17 +1,10 @@
-import React, { useState, Fragment, ChangeEvent, useEffect } from 'react'
-import withModificator from '@/hoc/withModificator'
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppThunkDispatch } from '@/store/types'
-import { RootState } from '@/store/types'
 import ModalError from '@/components/modal/modal'
-
-import {
-    createControl,
-    validate,
-    validateForm,
-    Ifield,
-} from '@/form/form-validation'
+import { createControl } from '@/form/form-validation'
+import withModificator from '@/hoc/withModificator'
+import { AppThunkDispatch, RootState } from '@/store/types'
+import React, { ChangeEvent, Fragment, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 type ThunkArgType = {
     email: string
@@ -35,6 +28,7 @@ function createFormControls() {
             {
                 type: 'email',
                 errorMessage: 'Поле email не может быть пустым',
+                autoComplete: 'off',
             },
             {
                 required: true,
@@ -45,6 +39,7 @@ function createFormControls() {
             {
                 type: 'password',
                 errorMessage: 'Поле password не может быть пустым',
+                autoComplete: 'off',
             },
             {
                 required: true,
@@ -62,9 +57,11 @@ const Auth: React.FC<PropsType> = props => {
     const [email, setEmail] = useState<string>('')
     const [formControls, setFormControls] = useState<any>('')
     const [password, setPassword] = useState<string>('')
+
     useEffect(() => {
         setFormControls(createFormControls())
     }, [])
+
     const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
         ev.preventDefault()
         if (email !== '' && password !== '') {

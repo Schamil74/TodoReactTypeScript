@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
 import withModificator from '@/hoc/withModificator'
-import { InitialTodoType, IdType } from '@/store/types/todo-types'
 import {
     thunkAddTodo,
-    thunkDeleteTodo,
     thunkCompleteTodo,
+    thunkDeleteTodo,
 } from '@/store/actions/todos-actions'
 import { AppThunkDispatch } from '@/store/types'
+import { IdType, InitialTodoType } from '@/store/types/todo-types'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-
 import Icon from '../icon/icon'
+
 const blockClassName = 'todos'
 
 type IProps = {

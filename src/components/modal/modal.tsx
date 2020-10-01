@@ -1,9 +1,9 @@
-import React from 'react'
-import Popup from 'reactjs-popup'
 import withModificator from '@/hoc/withModificator'
-import { Dispatch } from 'redux'
-import { useDispatch } from 'react-redux'
 import { isError } from '@/store/actions/auth-actions'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import Popup from 'reactjs-popup'
+import { Dispatch } from 'redux'
 const blockClassName = 'modal'
 
 type TModalError = {

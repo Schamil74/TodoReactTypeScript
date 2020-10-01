@@ -1,5 +1,5 @@
-import React from 'react'
 import withModificator from '@/hoc/withModificator'
+import React from 'react'
 const blockClassName = 'icon'
 
 type PropsType = {
