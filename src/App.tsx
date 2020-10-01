@@ -15,10 +15,24 @@ import { Dispatch } from 'redux'
 const blockClassName = 'app'
 const header = 'header'
 
+interface TRouter {
+    id: string
+    authed: boolean
+    path: string
+    exact?: boolean
+    Component: React.FC
+}
+
 const initialRoutes = [
     { id: '1', authed: true, path: '/', exact: true, Component: TodosPage },
-    { id: '2', authed: false, path: '/login', Component: Login },
-    { id: '3', authed: false, path: '/register', Component: Register },
+    { id: '2', authed: false, path: '/login', exact: false, Component: Login },
+    {
+        id: '3',
+        authed: false,
+        path: '/register',
+        exact: false,
+        Component: Register,
+    },
 ]
 
 const App: React.FC = () => {
@@ -32,13 +46,11 @@ const App: React.FC = () => {
         thunkDispatch(thunkLogOut())
     }
     const nodeRef = useRef(null)
-    const filteredRoutes = (uid: string | null, routes: Array<{}>) => {
+    const filteredRoutes = (uid: string | null, routes: Array<TRouter>) => {
         let innerState = false
         if (uid) innerState = true
 
-        return routes.filter((route: any) => {
-            return route.authed === innerState
-        })
+        return routes.filter((route: TRouter) => route.authed === innerState)
     }
     useEffect(() => {
         firebase.auth().onAuthStateChanged(user => {
@@ -54,8 +66,9 @@ const App: React.FC = () => {
         })
     }, [])
 
-    const routesAreAready = routes.map(
-        ({ id, path, exact, Component }: any) => (
+    const routesAreAready = routes.map((route: any | {}) => {
+        let { id, path, exact, Component } = route
+        return (
             <Route key={id} exact={exact} path={path}>
                 <CSSTransition
                     nodeRef={nodeRef}
@@ -70,7 +83,7 @@ const App: React.FC = () => {
                 </CSSTransition>
             </Route>
         )
-    )
+    })
 
     return (
         <div className={blockClassName + '__wrapper'}>

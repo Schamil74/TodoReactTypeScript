@@ -18,7 +18,7 @@ const ModalError: React.FC<TModalError> = props => {
 
     return (
         <Popup open={open} modal>
-            {(close: any) => (
+            {(close: Function) => (
                 <div className={className}>
                     <h2 className={blockClassName + '__title'}>{title}</h2>
                     <p className={blockClassName + '__error'}>{text}</p>

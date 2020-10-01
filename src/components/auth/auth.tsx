@@ -1,5 +1,11 @@
+import Input from '@/components/input/input'
 import ModalError from '@/components/modal/modal'
-import { createControl } from '@/form/form-validation'
+import {
+    createControl,
+    IFormControls,
+    validate,
+    validateForm,
+} from '@/form/form-validation'
 import withModificator from '@/hoc/withModificator'
 import { AppThunkDispatch, RootState } from '@/store/types'
 import React, { ChangeEvent, Fragment, useEffect, useState } from 'react'
@@ -27,8 +33,8 @@ function createFormControls() {
         email: createControl(
             {
                 type: 'email',
+                placeholder: 'Email',
                 errorMessage: 'Поле email не может быть пустым',
-                autoComplete: 'off',
             },
             {
                 required: true,
@@ -38,8 +44,8 @@ function createFormControls() {
         password: createControl(
             {
                 type: 'password',
+                placeholder: 'Password',
                 errorMessage: 'Поле password не может быть пустым',
-                autoComplete: 'off',
             },
             {
                 required: true,
@@ -55,8 +61,9 @@ const Auth: React.FC<PropsType> = props => {
     const { isError } = useSelector(authState)
     const thunkDispatch: AppThunkDispatch = useDispatch()
     const [email, setEmail] = useState<string>('')
-    const [formControls, setFormControls] = useState<any>('')
     const [password, setPassword] = useState<string>('')
+    const [isFormValid, setFormValid] = useState<boolean>(false)
+    const [formControls, setFormControls] = useState<IFormControls>({})
 
     useEffect(() => {
         setFormControls(createFormControls())
@@ -69,16 +76,45 @@ const Auth: React.FC<PropsType> = props => {
         }
     }
 
-    const handleChangeEmail = (ev: ChangeEvent<HTMLInputElement>) => {
-        const target = ev.target
-        const value: string = target.value
-        setEmail(value)
+    const changeHandler = (value: string, controlName: string) => {
+        const updatedFormControls = { ...formControls }
+        const control = { ...formControls[controlName] }
+        controlName === 'email' ? setEmail(value) : setPassword(value)
+        control.touched = true
+        control.value = value
+        const { isValid, optionErrorMessage } = validate(control)
+
+        control.valid = isValid
+        control.errorMessage = optionErrorMessage
+
+        updatedFormControls[controlName] = control
+
+        setFormValid(validateForm(updatedFormControls))
+        setFormControls(updatedFormControls)
     }
 
-    const handleChangePassword = (ev: ChangeEvent<HTMLInputElement>) => {
-        const target = ev.target
-        const value: string = target.value
-        setPassword(value)
+    const renderControls = () => {
+        return Object.keys(formControls).map(
+            (controlName: string, index: number) => {
+                const control = formControls[controlName]
+
+                return (
+                    <div className={blockClassName + '__field'} key={index}>
+                        <Input
+                            value={control.value}
+                            valid={control.valid}
+                            shouldValidate={!!control.validation}
+                            touched={control.touched}
+                            placeholder={control.placeholder}
+                            errorMessage={control.errorMessage}
+                            onChange={(ev: ChangeEvent<HTMLInputElement>) =>
+                                changeHandler(ev.target.value, controlName)
+                            }
+                        />
+                    </div>
+                )
+            }
+        )
     }
 
     return (
@@ -92,28 +128,13 @@ const Auth: React.FC<PropsType> = props => {
             )}
             <form className={className} onSubmit={handleSubmit}>
                 <div className={blockClassName + '__list'}>
-                    <div className={blockClassName + '__field'}>
-                        <input
-                            onChange={handleChangeEmail}
-                            placeholder="Введите email"
-                            className={blockClassName + '__input input'}
-                            type="email"
-                            autoComplete="off"
-                        />
-                    </div>
-                    <div className={blockClassName + '__field'}>
-                        <input
-                            onChange={handleChangePassword}
-                            placeholder="Пароль"
-                            className={blockClassName + '__input input'}
-                            type="password"
-                            autoComplete="off"
-                        />
-                    </div>
+                    {renderControls()}
+
                     <div className={blockClassName + '__field'}>
                         <button
                             className={blockClassName + '__btn btn btn_wide'}
                             type="submit"
+                            disabled={!isFormValid}
                         >
                             {textBtn}
                         </button>

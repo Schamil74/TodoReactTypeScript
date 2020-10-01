@@ -1,17 +1,30 @@
-interface Ivalidation {
-    [key: string]: string | boolean | {} | number
+export interface IObject {
+    [key: string]: string | number
+}
+
+export interface Ivalidation {
+    [key: string]: string | boolean | number
 }
 
 export interface Ifield {
     type: string
     errorMessage: string
-    validation: Ivalidation
+    placeholder: string
+    validation: Ivalidation | null
     valid: boolean
     touched: boolean
     value: string
+    autoComplete: string
 }
 
-type Tvalidation = Ivalidation | null
+export interface IFormControls {
+    [key: string]: Ifield
+}
+
+type ValidateReturn = {
+    isValid: boolean
+    optionErrorMessage: string
+}
 
 const isEmail = (emailAddress: string): boolean => {
     let pattern = new RegExp(
@@ -20,36 +33,63 @@ const isEmail = (emailAddress: string): boolean => {
     return pattern.test(emailAddress)
 }
 
-export function createControl(config: any, validation: Tvalidation): Ifield {
+export function createControl(
+    config: any,
+    validation: Ivalidation | null
+): Ifield {
     return {
         ...config,
         validation,
         valid: !validation,
         touched: false,
         value: '',
+        autoComplete: 'off',
     }
 }
 
-export function validate(value: any, validation: Tvalidation = null): boolean {
-    if (!validation) {
-        return true
-    }
+export function validate(control: Ifield): ValidateReturn {
+    const { validation, value, type, touched, errorMessage } = control
 
     let isValid = true
+    let optionErrorMessage = errorMessage
+
+    if (!validation) {
+        return { isValid, optionErrorMessage }
+    }
 
     if (validation.required) {
-        isValid = value.trim() !== '' && isValid
+        isValid = value.trim() !== ''
     }
 
-    if (validation.email) {
-        isValid = isEmail(value) && isValid
+    if (validation.email && touched) {
+        const emailValid = isEmail(value)
+
+        if (emailValid) {
+            isValid = true
+        } else if (value == '' || emailValid) {
+            isValid = false
+            optionErrorMessage = 'Поле email не может быть пустым'
+        } else {
+            isValid = false
+            optionErrorMessage = 'Поле email должно быть валидным'
+        }
     }
 
-    if (validation.minLength) {
-        isValid = value.length >= validation.minLength && isValid
+    if (validation.minLength && touched) {
+        const minLengthValid = value.length >= validation.minLength
+
+        if (minLengthValid) {
+            isValid = true
+        } else if (value == '' || minLengthValid) {
+            isValid = false
+            optionErrorMessage = `Поле ${type} не может быть пустым`
+        } else {
+            isValid = false
+            optionErrorMessage = `Поле ${type} должно иметь не менее ${validation.minLength} символов`
+        }
     }
 
-    return isValid
+    return { isValid, optionErrorMessage }
 }
 
 export function validateForm(formControls: any): boolean {
