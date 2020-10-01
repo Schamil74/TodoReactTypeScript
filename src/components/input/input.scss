@@ -33,6 +33,13 @@
             font-size: 16px;
             font-weight: 400;
         }
+        @include below(map-get($breaks, mobile)) {
+            text-align: center;
+
+            @include placeholder {
+                text-align: center;
+            }
+        }
         &:focus {
             border-bottom-color: #4a148c;
         }

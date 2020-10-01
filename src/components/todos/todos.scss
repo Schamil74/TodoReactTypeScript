@@ -7,6 +7,7 @@
     }
     &__filters {
         display: flex;
+        flex-wrap: wrap;
 
         margin-right: -5px;
         margin-bottom: 20px;
@@ -21,6 +22,14 @@
 
             color: #4a148c;
             border: 1px solid #4a148c;
+
+            @include below(map-get($breaks, mobile)) {
+                width: calc(100% - 10px);
+                margin-bottom: 10px;
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
             &.is-active {
                 color: #fff;
                 background-color: #4a148c;
@@ -33,10 +42,15 @@
     &__add {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
 
         margin-bottom: 20px;
         padding: 5px;
         padding-left: 0;
+
+        @include below(map-get($breaks, mobile)) {
+            justify-content: center;
+        }
         .todos__btn {
             margin-right: 0 !important;
         }
@@ -47,6 +61,13 @@
 
     &__field {
         flex: 1 1 auto;
+
+        @include below(map-get($breaks, mobile)) {
+            flex: none;
+
+            width: 100%;
+            margin-bottom: 10px;
+        }
     }
 
     &__label {
@@ -125,9 +146,18 @@
         background-color: transparent;
 
         appearance: none;
+        @include below(map-get($breaks, mobile)) {
+            flex: 0 0 50px;
+
+            max-width: 50px;
+            height: 50px;
+        }
         .icon {
             font-size: 20px;
 
+            @include below(map-get($breaks, mobile)) {
+                font-size: 30px;
+            }
             @include transition('transform');
             &:hover {
                 transform: scale(1.5);

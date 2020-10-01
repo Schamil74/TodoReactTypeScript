@@ -150,13 +150,13 @@ const Todos: React.FC<IProps> = props => {
             </div>
 
             <div className={blockClassName + '__add'}>
-                <div className={blockClassName + '__field'}>
+                <div className={blockClassName + '__field input'}>
                     <input
                         value={title}
                         onChange={handleChange}
                         placeholder="Введите название новой задачи"
                         type="text"
-                        className={blockClassName + '__input input'}
+                        className={blockClassName + '__input input__field'}
                     />
                 </div>
                 <label className={blockClassName + '__label'}>

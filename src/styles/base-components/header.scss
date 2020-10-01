@@ -1,4 +1,7 @@
 .header {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
     border-bottom: 1px solid #4a148c;
     &__container {
         display: flex;
@@ -9,8 +12,25 @@
         height: 100%;
     }
     h1 {
-        margin-right: 50px;
+        text-align: center;
 
         color: #4a148c;
+
+        line-height: 1.2;
+
+        @include below(map-get($breaks, laptop)) {
+            font-size: 20px;
+        }
+        @include below(map-get($breaks, mobile)) {
+            font-size: 16px;
+        }
+    }
+
+    .btn {
+        margin-left: 50px;
+
+        @include below(map-get($breaks, mobile)) {
+            margin-left: 20px;
+        }
     }
 }

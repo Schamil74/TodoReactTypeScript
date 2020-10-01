@@ -1,15 +1,15 @@
+import { store } from '@/store/reducers/'
+import '@/styles/app.scss'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { store } from '@/store/reducers/'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
-import '@/styles/app.scss'
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <BrowserRouter>
+            <BrowserRouter basename={process.env.PUBLIC_PATH}>
                 <App />
             </BrowserRouter>
         </Provider>
