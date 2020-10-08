@@ -101,6 +101,7 @@ const Auth: React.FC<PropsType> = props => {
                 return (
                     <div className={blockClassName + '__field'} key={index}>
                         <Input
+                            type={control.type}
                             value={control.value}
                             valid={control.valid}
                             shouldValidate={!!control.validation}
