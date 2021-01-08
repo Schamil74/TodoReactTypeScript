@@ -106,9 +106,7 @@ const Todos: React.FC<IProps> = props => {
                         className={blockClassName + '__btn'}
                         type="button"
                         title={
-                            computedClassName
-                                ? 'Сделать активной'
-                                : 'Завершить задачу'
+                            completed ? 'Сделать активной' : 'Завершить задачу'
                         }
                     >
                         <Icon modificator="checked icon_success" />
